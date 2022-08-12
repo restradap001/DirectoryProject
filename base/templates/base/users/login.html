@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row m-4">
-            <div class="col-6 offset-3 border rounded shadow-lg">
+            <div class="col-6 offset-3 border rounded shadow-lg" style="background-color: white;">
                 <form id="login" name="login" class="row mx-4" method="post" action="" autocomplete="off">
                     {% csrf_token %}
                     <div class="col-12">
@@ -45,7 +45,7 @@
                     <div class="row mb-4">
                         <div class="col text-center">
                             <div class="mx-xl-4 mx-4">
-                                Not account?&nbsp;<a href="" class="text-decoration-none">Sign up for free</a>
+                                Not account?&nbsp;<a href="{% url 'base:register' %}" class="text-decoration-none">Sign up for free</a>
                             </div>
                         </div>
                     </div>

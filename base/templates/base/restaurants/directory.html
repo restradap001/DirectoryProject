@@ -6,10 +6,10 @@
 
 {% block content %}
     <div class="container-fluid pt-4">
-        <div class="container p-4">
+        <div class="container p-4 border rounded shadow-lg">
             <div class="row">
                 <div class="col">
-                    <h4 class="fw-semibold">Directory of Restaurants:</h4>
+                    <h3 class="fw-semibold">Directory of Restaurants:</h3>
                 </div>
                 {% if request.user.is_authenticated %}
                     <div class="col-2">
