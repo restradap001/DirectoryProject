@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block title %}Where's My Restaurant? | Update an Existing Restaurant{% endblock %}
+
+{% block content %}
+    <div class="container-fluid pt-4">
+        <div class="container p-4 border rounded shadow-lg">
+            <div class="row mx-4">
+                <div class="col">
+                    <h4 class="fw-semibold">Update an Existing Restaurant:</h4>
+                </div>
+            </div>
+            <div class="row mx-4">
+                <div class="col">
+                    <hr class="divider">
+                </div>
+            </div>
+            <form class="row mx-4 mb-4" method="post" autocomplete="off">
+                {% csrf_token %}
+                <div class="col-6 mb-4">
+                    <label for="id_name" class="form-label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="col-3 mb-4">
+                    <label for="id_type" class="form-label">{{ form.type.label }}</label>
+                    {{ form.type }}
+                </div>
+                <div class="col-3 mb-4">
+                    <label for="id_telephone" class="form-label">{{ form.telephone.label }}</label>
+                    {{ form.telephone }}
+                </div>
+                <div class="col-12 mb-4">
+                    <label for="id_address" class="form-label">{{ form.address.label }}</label>
+                    {{ form.address }}
+                </div>
+                <div class="col-4 offset-4">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-outline-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Custom Alert Function -->
+    <script type="text/javascript">
+        function show_message(icon, message) {
+            Swal.fire({
+                icon: icon,
+                title: message,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+    </script>
+
+    <!-- Back-End Form Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    show_message('{{ message.tags }}', '{{ message|capfirst }}');
+                });
+            </script>
+        {% endfor %}
+    {% elif form.errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.name.errors|first|capfirst form.type.errors|first|capfirst form.telephone.errors|first|capfirst form.address.errors|first|capfirst %}');
+            });
+        </script>
+    {% elif form.non_field_errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.non_field_errors.0 %}');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

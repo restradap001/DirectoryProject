@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block title %}Where's My Restaurant? | Directory{% endblock %}
+
+{% block content %}
+    <div class="container-fluid pt-4">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col">
+                    <h4 class="fw-semibold">Directory of Restaurants:</h4>
+                </div>
+                {% if request.user.is_authenticated %}
+                    <div class="col-2">
+                        <div class="d-grid">
+                            <a href="{% url 'base:create-restaurant' %}" class="btn btn-outline-success"><i class="bi bi-plus me-2"></i>New Restaurant</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <hr class="divider">
+                </div>
+            </div>
+            <div class="row row-cols-3">
+                {% for restaurant in restaurants %}
+                    <div class="col mb-3">
+                        <div class="card">
+                            <h5 class="card-header"><i class="bi bi-star me-2"></i>{{ restaurant.type.type }}</h5>
+                            <div class="card-body">
+                                <h5 class="card-title mb-3"><i class="bi bi-shop me-2"></i>{{ restaurant.name }}</h5>
+                                <h6 class="card-subtitle mb-3 text-muted"><i class="bi bi-telephone me-2"></i>{{ restaurant.telephone }}</h6>
+                                <p class="card-text"><i class="bi bi-map me-2"></i>{{ restaurant.address }}</p>
+                                {% if request.user.is_authenticated %}
+                                    <div class="row">
+                                        <div class="col-4 offset-3 p-0">
+                                            <div class="d-grid">
+                                                <a href="{% url 'base:update-restaurant' restaurant.id %}" class="btn btn-outline-secondary"><i class="bi bi-pencil me-2"></i>Update</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <form method="post" action="{% url 'base:delete-restaurant' restaurant.id %}">
+                                                {% csrf_token %}
+                                                <div class="d-grid">
+                                                    <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash me-2"></i>Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Custom Alert Function -->
+    <script type="text/javascript">
+        function show_message(icon, message) {
+            Swal.fire({
+                icon: icon,
+                title: message,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+    </script>
+
+    <!-- Back-End Form Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    show_message('{{ message.tags }}', '{{ message|capfirst }}');
+                });
+            </script>
+        {% endfor %}
+    {% elif form.errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.name.errors|first|capfirst form.type.errors|first|capfirst form.telephone.errors|first|capfirst form.address.errors|first|capfirst %}');
+            });
+        </script>
+    {% elif form.non_field_errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.non_field_errors.0 %}');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

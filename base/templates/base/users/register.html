@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block title %}Where's My Restaurant? | Register{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row m-4">
+            <div class="col-6 offset-3 border rounded shadow-lg">
+                <form id="register" name="register" class="row mx-4" method="post" action="" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="mx-4 mt-4">
+                            <h3 class="fw-semibold text-center">Where's My Restaurant?</h3>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mx-4 mb-2 text-center">
+                            <span class="text-muted">Create an account to get full access</span>
+                        </div>
+                    </div>
+                    <div class="col-10 offset-1"><hr></div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_username" class="form-label">{{ form.username.label }}</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_email" class="form-label">{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_password1" class="form-label">{{ form.password1.label }}</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_password2" class="form-label">{{ form.password2.label }}</label>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <div class="d-grid">
+                              <button type="submit" class="btn btn-outline-primary">Register</button>
+                        </div>
+                    </div>
+                    <div class="col-10 offset-1 mb-4">
+                        <div class="row">
+                            <div class="col px-0"><hr></div>
+                            <div class="col-2 text-center">o</div>
+                            <div class="col px-0"><hr></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col text-center">
+                            <div class="mx-xl-4 mx-4">
+                                Already have an account?&nbsp;<a href="" class="text-decoration-none">Login here</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Bootstrap Classes Loader -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#id_username').addClass('form-control');
+            $('#id_email').addClass('form-control');
+            $('#id_password1').addClass('form-control');
+            $('#id_password2').addClass('form-control');
+        });
+    </script>
+
+    <!-- Custom Alert Function -->
+    <script type="text/javascript">
+        function show_message(icon, message) {
+            Swal.fire({
+                icon: icon,
+                title: message,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+    </script>
+
+    <!-- Back-End Form Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    show_message('{{ message.tags }}', '{{ message|capfirst }}');
+                });
+            </script>
+        {% endfor %}
+    {% elif form.errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.username.errors|first|capfirst form.email.errors|first|capfirst form.password1.errors|first|capfirst form.password2.errors|first|capfirst %}');
+            });
+        </script>
+    {% elif form.non_field_errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.non_field_errors.0 %}');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

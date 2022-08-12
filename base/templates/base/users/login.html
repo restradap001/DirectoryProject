@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block title %}Where's My Restaurant? | Login{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row m-4">
+            <div class="col-6 offset-3 border rounded shadow-lg">
+                <form id="login" name="login" class="row mx-4" method="post" action="" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="mx-4 mt-4">
+                            <h3 class="fw-semibold text-center">Where's My Restaurant?</h3>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mx-4 mb-2 text-center">
+                            <span class="text-muted">We'll never share your personal data with anyone else</span>
+                        </div>
+                    </div>
+                    <div class="col-10 offset-1"><hr></div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_username" class="form-label">{{ form.username.label }}</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <label for="id_password" class="form-label">{{ form.password.label }}</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="col-8 offset-2 mb-4">
+                        <div class="d-grid">
+                              <button type="submit" class="btn btn-outline-primary">Login</button>
+                        </div>
+                    </div>
+                    <div class="col-10 offset-1 mb-4">
+                        <div class="row">
+                            <div class="col px-0"><hr></div>
+                            <div class="col-2 text-center">o</div>
+                            <div class="col px-0"><hr></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col text-center">
+                            <div class="mx-xl-4 mx-4">
+                                Not account?&nbsp;<a href="" class="text-decoration-none">Sign up for free</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Bootstrap Classes Loader -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#id_username').addClass('form-control');
+            $('#id_password').addClass('form-control');
+        });
+    </script>
+
+    <!-- Custom Alert Function -->
+    <script type="text/javascript">
+        function show_message(icon, message) {
+            Swal.fire({
+                icon: icon,
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        }
+    </script>
+
+    <!-- Back-End Form Error Messages -->
+    {% if form.non_field_errors %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                show_message('error', '{% firstof form.non_field_errors.0 %}');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
